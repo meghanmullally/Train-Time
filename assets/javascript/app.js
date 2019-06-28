@@ -41,7 +41,7 @@ $("#add-train-btn").on("click", function (e) {
   // log everything to console
   console.log(trainName.name);
   console.log(destination.destination);
-  console.log(time.trainTime);
+  console.log(trainTime.trainTime);
   console.log(frequency.frequency);
 
   //Alert
@@ -56,19 +56,18 @@ $("#add-train-btn").on("click", function (e) {
 
 // Firebase event for adding trains to the db and a row in the html when a user adds an entry 
 
-database.ref().on("child_added", function (childSnapShot) {
-  console.log(childSnapshot.val());
+trainDB.ref().on("child_added", function (childSnapShot) {
 
   // store everything into a variable 
   var trainName = childSnapShot.val().name;
   var destination = childSnapShot.val().destination;
-  var firstTrain = childSnapShot.val().time;
+  var firstTrain = childSnapShot.val().trainTime;
   var frequency = childSnapShot.val().frequency;
 
 
   // Frequency - with minutes 
   // Train Time
-  var timeArray = firstTrain.split(":");
+  var timeArray = trainTime;
   var trainTime = moment().hours(timeArray[0]).minutes(timeArray[1]);
   var momentMax = moment.max(moment(), trainTime);
   var minutes;
@@ -76,7 +75,7 @@ database.ref().on("child_added", function (childSnapShot) {
 
   // if first train is past the current time then sent arrival to the first train 
 
-  if (minutes === trainTime) {
+  if (momentMax === trainTime) {
     arrival = trainTime.format("HH:MM A");
     minutes = trainTime.diff(moment(), "minutes");
   } else {
@@ -98,12 +97,12 @@ database.ref().on("child_added", function (childSnapShot) {
   var newRow = $("<tr>").append(
     $("<td>").text(trainName),
     $("<td>").text(destination),
-    $("<td>").text(trainTimePretty),
+    $("<td>").text(trainTime),
     $("<td>").text(frequency),
   );
 
   // Append the new row to the table
-  $("#train-table > tbody").append(newRow);
+  $("#train-table> tbody").append(newRow);
 
 
 });
