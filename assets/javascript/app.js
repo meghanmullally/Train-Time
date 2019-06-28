@@ -10,3 +10,19 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+var database = firebase.database();
+
+
+// button for adding Trains 
+
+$("#add-train-btn").on("click", function(e) {
+  e.preventDefault();
+  
+
+//Grab user input 
+var trainName = $("#train-name-input").val().trim();
+var destination = $("#destination.input").val().trim();
+var 
+
+})
